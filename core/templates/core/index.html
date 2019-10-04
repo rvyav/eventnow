@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+	<!-- css Map -->
+    <style>
+      #map {
+        height: 70%;
+        width: 70%;
+        margin-top: 2%;
+        margin-left: 10%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <p>Welcome to <b>EventNow</b></p>
+        <h4>Join your favorite activity near by.</h4>
+    </div>
+
+	 <!-- Render Map on HTML -->
+    <div id="map"></div></br></br>
+
+{% endblock %}
+
+
+{% block script %}
+
+   <!--  Script to call Google map -->
+    <script type="text/javascript">
+        
+        var activities = {{ activities|safe }};
+
+        function initMap() {
+          var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: new google.maps.LatLng(40.736481, -73.988243),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+
+        for (i = 0; i < activities.length; i++) {
+          marker = new google.maps.Marker({
+            position: new google.maps.LatLng(activities[i][3], activities[i][4]),
+            map: map
+          });
+
+
+          google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+              infowindow.setContent('<h6><strong>' + activities[i][1] + '</strong></h6>' + activities[i][2] + '<br>' + '<br>' + '<a href="' + activities[i][0] + '"><strong>Group details<strong></a>');
+              infowindow.open(map, marker);
+            }
+          })(marker, i));
+        }
+
+        }      
+    </script>
+{% endblock %}
+
+{% block key %}
+
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8b5Sg_2YJrp4C136wW4GBMwOdq_b4JZM&callback=initMap" async defer></script>
+
+{% endblock %}
+

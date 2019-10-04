@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container mt-5 mb-5 ml-5">
+	Group name: <h1><b>{{ group_details }}</b></h1>
+	</br>
+	<p>Your host is <b>{{ group_details.host }}</b>
+	</br>
+	</br>
+	
+	<!-- Add and remove current user from the list -->
+	
+	<!-- Number of participants -->
+	{% if group_details.member.count > 1 %}
+	<p><b>Will you join?</b> <p>{{ group_details.member.count }} people joined.</p>
+	{% else %}
+	<p><b>Will you join?</b> <p>{{ group_details.member.count }} person joined.</p>
+	{% endif %}
+	<form action="." method="POST">
+		{% csrf_token %}
+		<p><input class="btn btn-info" type="submit" name="join-group" value="Join Group"></p>
+		<p><input class="btn btn-danger" type="submit" name="leave-group" value="Leave Group"></p>
+	</form>	
+	</br>
+	</br>
+
+
+	<!-- Group description -->
+	<h5><b>Details</b></h5></br>
+	{{ group_details.description }}
+	</br>
+	</br>
+	</br>
+	<!-- List of users -->
+
+	<h5><b>Attendees({{ group_details.member.count }})</b></h5></br>
+
+	<div class="d-flex flex-wrap">
+		{% for chatter in group_details.member.all %}
+			</br>
+			<div class="card mr-3 mb-3" style="width: 10rem;">
+			  <!-- <img src="..." class="card-img-top" alt="..." align="center"> -->
+			  <div class="card-body">
+			    <h5 class="card-title" align="center">{{ chatter }}</h5>
+			    <p class="card-text" align="center"align="center">Member</p>
+			  </div>
+			</div>
+		{% empty %}
+			</br>
+			<h4>No one has joined the group yet.</h4>
+			</br>
+			<h6>Press <b>join-group</b> below.</h6>
+			</br>
+		{% endfor%}
+		</br>
+		</br>
+		</br>
+	</div>
+
+	<!-- Bootstrap Media object -->
+	</br>
+	<h5><b>Comments</b></h5></br>
+	{% for comment in comments %}
+		<div class="media">
+		  <!-- <img src="..." class="align-self-start mr-3" alt="..."> -->
+		  <div class="media-body">
+		    <h5 class="mt-0"><b>{{ comment.author }}</b></h5>
+		    <p>{{ comment.created }}</p>
+		    <p><b>{{ comment.body|linebreaks }}</b></p>
+		  </div>
+		</div>
+		<hr>
+	{% empty %}
+		<p>There are no comments yet.</p>
+	{% endfor %}
+	
+	</br>
+	<button class="btn btn-secondary" type="button" onclick="asd(1)" id="insert" value="Add new Product">Comment</button>
+
+	<!-- comments Form -->
+	</br>
+	</br>
+	<div id="asd" class="myForm">
+		{% if new_comment %}
+			<h2>Your comment has been added.</h2>
+		{% else %}
+			<h2>Add a new comment</h2>
+			<form action="" method="post" class="col-md-4">
+				{% csrf_token %}
+				{{ comment_form|crispy }}
+				<p><input class="btn btn-primary" type="submit" value="Add comment"></p>
+			</form>
+		{% endif %}
+	</div>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<!-- Script to open comments section -->
+<script type="text/javascript">
+
+  window.onload = function() {
+
+    document.getElementById("asd").style.display = "none";
+
+  };
+
+  function asd(a) {
+  
+    if (a == 1) {
+      document.getElementById("asd").style.display = "block";
+    } else {
+      document.getElementById("asd").style.display = "none";
+    }
+      
+  }
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
