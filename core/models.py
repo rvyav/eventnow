@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-
+from django.urls import reverse
 
 User = settings.AUTH_USER_MODEL
 
@@ -27,7 +27,7 @@ class Activity(models.Model):
 		return self.name
 
 	def get_absolute_url(self):
-		return reverse('core:group_detail', kwargs={'pk': self.pk })
+		return reverse('core:activity_detail', kwargs={'pk': self.pk })
 
 class Comment(models.Model):
 	author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_comments')

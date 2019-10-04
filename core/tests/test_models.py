@@ -1,35 +1,41 @@
 from django.test import TestCase
 from core.models import Activity, Comment
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 User = get_user_model()
 
 class ActivityModelTest(TestCase):
 	def setUp(self):
 		"""
-		Setup fixtures to test
-		Activity Model.
+		Setup fixtures for
+		Activity and Comment Model.
 		"""
-		user = User.objects.create(username='tom', password='tom')
-		user.save()
+		self.user = User.objects.create(username='tom', password='tom')
 
-		Activity.objects.create(
+		self.activity = Activity.objects.create(
 					name="cycling", 
 					description="stay healthing challenging your body",
-					host_id=User.objects.get(username=user).pk,
-					#member = "Group 2",
+					host=self.user,
 					address="212 Broadway, New York, NY",
 					longitude="-73.988243",
 					latitude="40.736481",
-					postal_code="10009",
+					postal_code="10001",
 					group_max_limit="12"
 		)
 
-	def test_create_activity_name(self, name="cycling"):
+		self.comment = Comment.objects.create(
+					body="testing comments", 
+					author=self.user, 
+					activity=self.activity
+		)
+
+
+	def test_activity_description(self):
 		"""
-		Test create new Activity Model name.
+		Test Activity model description.
 		"""
-		return Activity.objects.get(name=name)
+		self.assertEqual(self.activity.description, 'stay healthing challenging your body')
 
 	def test_verbose_name_plural(self):
 		"""
@@ -37,11 +43,26 @@ class ActivityModelTest(TestCase):
 		"""
 		self.assertEqual(str(Activity._meta.verbose_name_plural), "activities")
 
-	# def test_get_absolute_url(self):
-	# 	"""
-	# 	Canonical URL.
-	# 	"""
 
-	# def test_activity_description(self):
-	# 	cycling = Activity.objects.get(name="cycling")
-	# 	self.assertEqual(cycling.description(), 'Good for your health and burning calories')
+	def test_activity_get_absolute_url(self):
+		"""
+		Canonical URL to detail page.
+		"""
+		response = self.client.post(reverse('core:activity_detail', kwargs={'id':self.activity.id}))
+		self.assertEqual(response.status_code, 200)
+
+
+	def test_comment_body(self):
+		"""
+		Test Comment model body.
+		"""
+		self.assertEqual(self.comment.body, 'testing comments')
+
+
+
+
+
+
+
+
+
