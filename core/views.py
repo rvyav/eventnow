@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json, pdb
@@ -11,7 +12,7 @@ from .forms import ActivityForm, CommentForm
 
 User = get_user_model()
 
-
+@login_required
 def activity_list(request):
 	"""
 	Display list of active activities.
@@ -26,7 +27,7 @@ def activity_list(request):
 	context = {'activities': json.dumps(activities), 'links':links}
 	return render(request, 'core/index.html', context)
 
-
+@login_required
 @transaction.atomic
 def activity_detail(request, id):	
 	"""
@@ -106,6 +107,78 @@ def activity_detail(request, id):
 	}
 
 	return render(request, 'core/detail.html', context)
+
+
+@login_required
+def profile(request, id):
+	"""
+	Current logged-in user
+	profile page.
+	"""
+
+	# group current user belong to
+	current_user = User.objects.get(id=id)
+	group_belonged_to = current_user.members.all()
+
+	number_of_groups = group_belonged_to.count()
+
+	# groups created by user
+	groups_created = current_user.activities.all()
+
+	number_of_groups_created = groups_created.count()
+
+	context = {
+			'group_belonged_to':group_belonged_to,
+			'number_of_groups': number_of_groups,
+			'groups_created': groups_created,
+			'number_of_groups_created': number_of_groups_created
+	}
+	return render(request, 'core/profile.html', context)
+
+
+@login_required
+def create_activity(request):
+	"""
+	Create New Acivity.
+	"""
+	if request.method == 'POST':
+		form = ActivityForm(request.POST)
+		if form.is_valid():
+			entity = form.save(commit=False)
+			entity.host = request.user
+			entity.save()
+			# Grab current group Host ID and
+			# to add Host to activity created
+			entity.id
+			group_to_join = Activity.objects.get(id=entity.id)
+			add_user_to_group = User.objects.get(username=request.user)
+			result = group_to_join.member.add(add_user_to_group)
+			# messages
+			messages.success(request, 'New Activity created successfully')
+			return redirect('core:activity_list')
+
+	else:
+		form = ActivityForm()
+
+
+	context = {
+		'form':form,
+	}
+
+	return render(request, 'core/create-group.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

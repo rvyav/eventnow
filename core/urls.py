@@ -6,5 +6,6 @@ app_name = 'core'
 urlpatterns = [
 	path('', views.activity_list, name='activity_list'),	
 	path('<int:id>/', views.activity_detail, name='activity_detail'),
-	#path('create-activity/', views.create_activity, name='create_activity'),
+	path('profile/<int:id>/', views.profile, name='profile'),
+	path('create-activity/', views.create_activity, name='create_activity'),
 ]

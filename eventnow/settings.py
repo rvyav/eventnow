@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'core',
+    'users',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -135,6 +136,29 @@ STATIC_URL = '/static/'
 # CS4
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Redirect after login
+
+LOGIN_REDIRECT_URL = 'core:activity_list'
+
+# Redirect after logout
+
+LOGOUT_REDIRECT_URL = 'login' 
+
+# Redirect to login if not logged in, decorator
+
+LOGIN_URL = 'login' 
+
+
+# Crispy forms
+
+CRISPY_TEMPLATE_PACK =  'bootstrap4'
+
+
+
+
+
 
 
 

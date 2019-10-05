@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container mt-5 mb-5 ml-5">
+	<h3>Create Group</h3>
+	<form action="." method="POST" class="col-md-5">
+		{% csrf_token %}
+		{{ form|crispy }}
+		</br>
+		<p><input class="btn btn-primary" type="submit" name="join-group" value="Submit"></p>
+	</form>
+</div>
+
+{% endblock %}

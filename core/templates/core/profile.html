@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container mt-5 mb-5 ml-5">
+	<h1><b>{{ request.user }}</b></h1>
+	<hr>
+	</br>
+	<p>First name : <b>{{ request.user.first_name }}</b></p>
+	<p>Last name : <b>{{ request.user.last_name }}</b></p>
+	</br>
+	<hr>
+
+	<!-- Number of groups -->
+	{% if group_belonged_to.count > 1 %}
+		<h1>Member of <b>{{ number_of_groups }}</b> groups</h1>
+	{% else %}
+		<h1>Member of <b>{{ number_of_groups }}</b> group</h1>
+	{% endif %}
+	<hr>
+	<br>
+
+	<!-- Member of groups -->
+	<p>Your are a member of the group:</p>
+	<br>	
+	{% for group in group_belonged_to %}
+		<div class="media ml-3">
+		  <div class="media-body">
+		    <h5 class="mt-0"><b>{{ group.name }}</b></h5>
+		    {{ group.description }}
+		  </div>
+		</div>
+		<hr>
+		<br>
+	{% empty %}
+		<p><b>You haven't joined a group yet.</b></p>
+	{% endfor %}
+	</br>
+	</br>
+
+	<!-- Groups created -->
+
+	<!-- Number of groups -->
+	{% if groups_created.count > 1 %}
+		<h1>You are host of <b>{{ number_of_groups_created }}</b> groups</h1>
+	{% else %}
+		<h1>You are host of <b>{{ number_of_groups_created }}</b> group</h1>
+	{% endif %}
+	<hr>
+	<br>
+
+	<!-- Host of groups -->
+	<br>	
+	{% for created in groups_created %}
+		<div class="media ml-3">
+		  <div class="media-body">
+		    <h5 class="mt-0"><b>{{ created.name }}</b></h5>
+		    {{ created.description }}
+		  </div>
+		</div>
+		<hr>
+		<br>
+	{% empty %}
+		<p><b>You haven't created a group yet.</b></p>
+	{% endfor %}
+	</br>
+	</br>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
