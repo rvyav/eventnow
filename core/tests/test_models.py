@@ -49,7 +49,7 @@ class ActivityModelTest(TestCase):
 		Canonical URL to detail page.
 		"""
 		response = self.client.post(reverse('core:activity_detail', kwargs={'id':self.activity.id}))
-		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.status_code, 302)
 
 
 	def test_comment_body(self):
