@@ -6,16 +6,29 @@
 
 {% block content %}
 
-	</br>
+    </br>
 	</br>
 	<div class="col-md-6 offset-lg-3 mt-5 mb-5">
-	  	<form method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        </br>
-        <button class="btn btn-primary" type="submit">Login</button>
-      </form>
+        <div class="card">
+          <div class="card-header" style="background: #df103c">
+            <h3 class="col-md-6 offset-lg-3 mt-2 mb-2" style="color: #fff">Welcome to <b>Eventnow</b></h3>
+          </div>
+          <div class="card-body offset-lg-2">
+            <h5 class="card-title">Your next experience at a fingertip.</h5>
+            <p class="card-text">The easiest way to connect instantly to your favorite event near you.</p>
+          </div>
+          <div class="container col-md-8">
+              <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                </br>
+                <button class="btn btn-danger mb-4" type="submit">Login</button>
+              </form>
+          </div>
+        </div>
+	  	
     </div>
+</div>
 
 {% endblock %}
 
