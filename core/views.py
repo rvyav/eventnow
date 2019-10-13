@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
@@ -168,7 +169,13 @@ def create_activity(request):
 	return render(request, 'core/create-group.html', context)
 
 
+def custom_404(request):
+	"""Handle error 404."""
+	return render(request, 'templates/404.html')
 
+def custom_500(request):
+	"""Handle error 500."""
+	return render(request, 'templates/500.html')
 
 
 
